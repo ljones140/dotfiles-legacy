@@ -1,9 +1,0 @@
-#!/usr/bin/env ruby
-
-# Check if vundler has been installed, if not install it
-vundle_directory = File.expand_path File.join('~', '.vim', 'bundle', 'Vundle.vim')
-
-unless Dir.exists?(vundle_directory)
-    puts "Installing Vundler..."
-    `git clone https://github.com/gmarik/Vundle.vim.git #{vundle_directory}`
-end
