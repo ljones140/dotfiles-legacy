@@ -9,6 +9,14 @@ https://github.com/technicalpickles/homesick
 
 pre installation: http://jilles.me/badassify-your-terminal-and-shell/
 
+```sh
+brew install vim
+brew install zsh
+brew install z
+brew install tmux
+curl -L http://install.ohmyz.sh | sh
+```
+
 require the homesick gem
 ```sh
 gem install homesick
