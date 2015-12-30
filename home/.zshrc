@@ -55,7 +55,7 @@ plugins=(git brew npm)
 
 . `brew --prefix`/etc/profile.d/z.sh
 
-export PATH=$PATH:"/Users/lewis/.rvm/gems/ruby-2.2.1/bin:/Users/lewis/.rvm/gems/ruby-2.2.1@global/bin:/Users/lewis/.rvm/rubies/ruby-2.2.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/lewis/.rvm/bin"
+export PATH=$PATH:"/Users/lewis/.rvm/gems/ruby-2.2.1/bin:/Users/lewis/.rvm/gems/ruby-2.2.1@global/bin:/Users/lewis/.rvm/rubies/ruby-2.2.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/lewis/.rvm/bin:$HOME/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
