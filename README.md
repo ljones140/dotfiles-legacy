@@ -7,7 +7,9 @@ https://github.com/technicalpickles/homesick
 
 ##Installation
 
-pre installation: http://jilles.me/badassify-your-terminal-and-shell/
+###pre installation
+
+based on this guide: http://jilles.me/badassify-your-terminal-and-shell/
 
 ```sh
 brew install vim
@@ -15,9 +17,14 @@ brew install zsh
 brew install z
 brew install tmux
 curl -L http://install.ohmyz.sh | sh
+touch ~/.hushlogin
 ```
 
-require the homesick gem
+Will also need to install powerline fonts
+
+###Installation
+
+requires the homesick gem
 ```sh
 gem install homesick
 ```
