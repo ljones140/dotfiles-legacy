@@ -36,7 +36,9 @@ once cloned then symlink the dotfiles
 homesick symlink dotfiles
 ```
 Install Vundler
+
+Uses .homesickrc to install vundler.
 ```sh
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+homesick rc dotfiles
 ```
 then in vim run :PluginInstall to get vundler to take the plugins.
