@@ -7,3 +7,7 @@ unless Dir.exists?(vundle_directory)
   puts "Installing Vundler..."
   `git clone https://github.com/gmarik/Vundle.vim.git #{vundle_directory}`
 end
+
+puts "Setting up zsh"
+`sh install_zsh.sh`
+puts "Done!"
