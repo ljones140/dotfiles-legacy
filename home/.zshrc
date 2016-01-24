@@ -1,6 +1,8 @@
+. `brew --prefix`/etc/profile.d/z.sh
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/lewis/.oh-my-zsh
+export ZSH=/Users/ljones/.oh-my-zsh
 
+export EDITOR='vim'
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
@@ -54,12 +56,15 @@ plugins=(git brew npm)
 # User configuration
 
 . `brew --prefix`/etc/profile.d/z.sh
-
-export PATH=$PATH:"/Users/lewis/.rvm/gems/ruby-2.2.1/bin:/Users/lewis/.rvm/gems/ruby-2.2.1@global/bin:/Users/lewis/.rvm/rubies/ruby-2.2.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/lewis/.rvm/bin:$HOME/bin"
+#the following 2 lines are for use with RVM. I've moved to rbenv.
+# export PATH=$PATH:"/Users/lewis/.rvm/gems/ruby-2.2.1/bin:/Users/lewis/.rvm/gems/ruby-2.2.1@global/bin:/Users/lewis/.rvm/rubies/ruby-2.2.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/lewis/.rvm/bin:$HOME/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
+#export PATH="/Users/ljones/.rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:$HOME/bin"
+export PATH="$HOME/.rbenv/bin:$PATH:$HOME/bin"
+eval "$(rbenv init -)"
 source $ZSH/oh-my-zsh.sh
-
+export PROJECTS_HOME=${HOME}/projects
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -70,7 +75,11 @@ source $ZSH/oh-my-zsh.sh
 #   export EDITOR='mvim'
 # fi
 
-# Compilation flags
+#speed up escape in vim
+# 10ms for key sequences
+KEYTIMEOUT=1
+
+# C mpilation flags
 # export ARCHFLAGS="-arch x86_64"
 
 # ssh
@@ -91,3 +100,11 @@ alias gd='git diff'
 alias go='git checkout '
 alias gk='gitk --all&'
 alias gx='gitx --all'
+#lock machine
+alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
+alias be='bundle exec'
+alias tas='tmux attach-session -t'
+alias tagme='ctags -R --languages=ruby --exclude=.git --exclude=log .'
+alias btagme='ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)'
+#env
+source ~/.env

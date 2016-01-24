@@ -42,6 +42,8 @@ homesick symlink dotfiles
 ```
 Install Vundler
 
+**having problems with this at them moment so may have to install Vundler
+manually**
 Uses .homesickrc to install vundler.
 ```sh
 homesick rc dotfiles

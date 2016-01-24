@@ -25,6 +25,10 @@ Plugin 'bling/vim-airline'
 Plugin 'tomasr/molokai'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-surround'
+Plugin 'jlanzarotta/bufexplorer'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'christoomey/vim-tmux-runner'
+Plugin 'xero/sourcerer'
 
 " All of your Plugins must be added before the following line
 
@@ -43,6 +47,8 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
+"speed up escape
+set timeoutlen=1000 ttimeoutlen=0
 
 " Leader
 let mapleader = " "
@@ -64,12 +70,27 @@ map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 "colorscheme
+" colorscheme gruvbox
 colorscheme molokai
-"let g:gruvbox_termcolors=16
+" colorscheme sourcerer
+" let g:gruvbox_termcolors=16
+
+"Vim tmux runner
+nnoremap <leader>irb :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'irb'}<cr>
+nnoremap <leader>otr :VtrOpenRunner {'orientation': 'h', 'percentage': 50 }<cr>
+nnoremap <leader>sa :VtrSendFile<cr>
+
 
 "Airline config"
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
+
+" zoom a vim pane, <C-w>= to re-balance
+nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
+nnoremap <leader>= :wincmd =<cr>
 
 " Switch syntax highlighting on, when the terminal has colors
 
@@ -151,6 +172,9 @@ set colorcolumn=+1
 set number
 set numberwidth=5
 
+"refresh file changes
+:set autoread
+
 " Tab completion
 " will insert tab at beginning of line,
 " will use completion if not at beginning
@@ -188,15 +212,36 @@ nmap gO O<ESC>j
 nmap gr o<ESC>kO<ESC>j
 
 " vim-rspec mappings
+" let g:rspec_command = "!bundle exec rspec {spec}" 
+let g:rspec_command = "call VtrSendCommand('be rspec {spec}')"
+" let g:rspec_command = "VtrSendCommandToRunner!('bundle exec rspec {spec}')"
 nnoremap <Leader>t :call RunCurrentSpecFile()<CR>
 nnoremap <Leader>s :call RunNearestSpec()<CR>
 nnoremap <Leader>l :call RunLastSpec()<CR>
 
+nnoremap <leader>va :VtrAttachToPane<cr>
+
 " Run commands that require an interactive shell
 nnoremap <Leader>r :RunInInteractiveShell<space>
 
+" Buffers
+:nnoremap <F5> :buffers<CR>:buffer<Space>
+
+"ctage Ctrl-p
+nnoremap <leader>. :CtrlPTag<cr>
+
 " Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
+
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set norelativenumber
+  else
+    set relativenumber
+  endif
+endfunc
+
+nnoremap <leader>nt :call NumberToggle()<cr>
 
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
