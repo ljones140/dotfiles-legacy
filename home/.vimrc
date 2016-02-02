@@ -29,6 +29,8 @@ Plugin 'jlanzarotta/bufexplorer'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'christoomey/vim-tmux-runner'
 Plugin 'xero/sourcerer'
+Plugin 'christoomey/vim-conflicted'
+Plugin 'roman/golden-ratio'
 
 " All of your Plugins must be added before the following line
 
@@ -175,6 +177,8 @@ set numberwidth=5
 "refresh file changes
 :set autoread
 
+"pasting
+set clipboard=unnamed
 " Tab completion
 " will insert tab at beginning of line,
 " will use completion if not at beginning
@@ -211,6 +215,8 @@ nmap go o<ESC>k
 nmap gO O<ESC>j
 nmap gr o<ESC>kO<ESC>j
 
+"insert require pry
+nmap <leader>py orequire "pry"; binding.pry<ESC>
 " vim-rspec mappings
 " let g:rspec_command = "!bundle exec rspec {spec}" 
 let g:rspec_command = "call VtrSendCommand('be rspec {spec}')"
