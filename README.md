@@ -1,13 +1,13 @@
-#Dotfiles
+# Dotfiles
 
 Here are my dotfiles. I have used homesick to create this repo/CASTLE using
 homesick generate command. Homesick should help transfering to another machine.
 
 https://github.com/technicalpickles/homesick
 
-##Installation
+## Installation
 
-###pre installation
+### pre installation
 
 based on this guide: http://jilles.me/badassify-your-terminal-and-shell/
 
@@ -27,7 +27,7 @@ touch ~/.hushlogin
 
 Will also need to install powerline fonts
 
-###Installation
+### Installation
 
 requires the homesick gem
 ```sh

@@ -31,6 +31,8 @@ Plugin 'christoomey/vim-tmux-runner'
 Plugin 'xero/sourcerer'
 Plugin 'christoomey/vim-conflicted'
 Plugin 'roman/golden-ratio'
+Plugin 'suan/vim-instant-markdown'
+Plugin 'ngmy/vim-rubocop'
 
 " All of your Plugins must be added before the following line
 
