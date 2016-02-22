@@ -22,7 +22,7 @@ Plugin 'thoughtbot/vim-rspec'
 Plugin 'morhetz/gruvbox'
 Plugin 'tpope/vim-fugitive'
 Plugin 'bling/vim-airline'
-Plugin 'tomasr/molokai'
+" Plugin 'tomasr/molokai'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-surround'
 Plugin 'jlanzarotta/bufexplorer'
@@ -30,10 +30,11 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'christoomey/vim-tmux-runner'
 Plugin 'xero/sourcerer'
 Plugin 'christoomey/vim-conflicted'
-Plugin 'roman/golden-ratio'
+" Plugin 'roman/golden-ratio'
 Plugin 'suan/vim-instant-markdown'
 Plugin 'ngmy/vim-rubocop'
-
+Plugin 'tpope/vim-rails'
+Plugin 'easysid/mod8.vim'
 " All of your Plugins must be added before the following line
 
 call vundle#end()            " required
@@ -74,8 +75,9 @@ map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 "colorscheme
-" colorscheme gruvbox
-colorscheme molokai
+colorscheme gruvbox
+" colorscheme molokai
+" colorscheme mod8
 " colorscheme sourcerer
 " let g:gruvbox_termcolors=16
 
@@ -83,7 +85,6 @@ colorscheme molokai
 nnoremap <leader>irb :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'irb'}<cr>
 nnoremap <leader>otr :VtrOpenRunner {'orientation': 'h', 'percentage': 50 }<cr>
 nnoremap <leader>sa :VtrSendFile<cr>
-
 
 "Airline config"
 let g:airline_powerline_fonts = 1
@@ -168,9 +169,14 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 endif
 
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
 " Make it obvious where 80 characters is
 set textwidth=80
 set colorcolumn=+1
+
 
 " Numbers
 set number
@@ -276,9 +282,8 @@ set complete+=kspell
 
 " Always use vertical diffs
 set diffopt+=vertical
-
+" ctlp p install
 set runtimepath^=~/.vim/bundle/ctrlp.vim
-
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
