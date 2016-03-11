@@ -243,6 +243,7 @@ nnoremap <Leader>r :RunInInteractiveShell<space>
 
 "ctage Ctrl-p
 nnoremap <leader>. :CtrlPTag<cr>
+nnoremap <leader>, :CtrlPBuffer<cr>
 
 " Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
@@ -255,7 +256,14 @@ function! NumberToggle()
   endif
 endfunc
 
+"line number toggle
 nnoremap <leader>nt :call NumberToggle()<cr>
+
+" relative path  (src/foo.txt)
+nnoremap <leader>cf :let @*=expand("%")<CR>
+
+" absolute path  (/something/src/foo.txt)
+nnoremap <leader>cF :let @*=expand("%:p")<CR>
 
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
@@ -267,6 +275,9 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
+" on wrapped lines move normall
+nnoremap j gj
+nnoremap k gk
 " configure syntastic syntax checking to check on open as well as save
 let g:syntastic_check_on_open=1
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
