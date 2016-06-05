@@ -35,6 +35,11 @@ Plugin 'suan/vim-instant-markdown'
 Plugin 'ngmy/vim-rubocop'
 Plugin 'tpope/vim-rails'
 Plugin 'easysid/mod8.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'rking/ag.vim'
+Plugin 'ervandew/supertab'
+Plugin 'chriskempson/base16-vim'
+Plugin 'airblade/vim-gitgutter'
 " All of your Plugins must be added before the following line
 
 call vundle#end()            " required
@@ -76,6 +81,12 @@ map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 "colorscheme
 colorscheme gruvbox
+
+"Base 16 colourchemes
+" colorscheme base16-default
+" let base16colorspace=256
+" set background=dark
+
 " colorscheme molokai
 " colorscheme mod8
 " colorscheme sourcerer
@@ -171,7 +182,7 @@ endif
 
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " bind \ (backward slash) to grep shortcut
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+" command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<SPACE>
 " Make it obvious where 80 characters is
 set textwidth=80
@@ -290,6 +301,21 @@ set spellfile=$HOME/.vim-spell-en.utf-8.add
 
 " Autocomplete with dictionary words when spell check is on
 set complete+=kspell
+
+"use tabularize to align as soon as pipe is entered
+
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
 
 " Always use vertical diffs
 set diffopt+=vertical

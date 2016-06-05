@@ -8,6 +8,11 @@ export EDITOR='vim'
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME=agnoster
+
+# Base16 Shell
+BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
+[[ -s $BASE16_SHELL ]] && source $BASE16_SHELL
+
 #export PATH=$PATH:"/usr/local/share/npm/bin" 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -51,7 +56,7 @@ ZSH_THEME=agnoster
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git brew npm)
+plugins=(git brew npm ruby bundler)
 
 # User configuration
 
@@ -108,3 +113,6 @@ alias tagme='ctags -R --languages=ruby --exclude=.git --exclude=log .'
 alias btagme='ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)'
 #env
 source ~/.env
+# source ~/.after_sbrc
+export NVM_DIR="/Users/ljones/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
