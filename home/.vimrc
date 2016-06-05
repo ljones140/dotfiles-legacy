@@ -85,12 +85,16 @@ colorscheme gruvbox
 "Base 16 colourchemes
 " colorscheme base16-default
 " let base16colorspace=256
-" set background=dark
+set background=dark
 
 " colorscheme molokai
 " colorscheme mod8
 " colorscheme sourcerer
 " let g:gruvbox_termcolors=16
+
+"get rid of yellow line in neovim
+set nohlsearch
+
 
 "Vim tmux runner
 nnoremap <leader>irb :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'irb'}<cr>
