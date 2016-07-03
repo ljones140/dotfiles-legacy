@@ -1,11 +1,6 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-"if filereadable(expand("~/.vimrc.bundles"))
-"  source ~/.vimrc.bundles
-"endif
-
-
 " set the runtime path to include Vundle and initialize
 "
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -22,7 +17,6 @@ Plugin 'thoughtbot/vim-rspec'
 Plugin 'morhetz/gruvbox'
 Plugin 'tpope/vim-fugitive'
 Plugin 'bling/vim-airline'
-" Plugin 'tomasr/molokai'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-surround'
 Plugin 'jlanzarotta/bufexplorer'
@@ -30,7 +24,6 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'christoomey/vim-tmux-runner'
 Plugin 'xero/sourcerer'
 Plugin 'christoomey/vim-conflicted'
-" Plugin 'roman/golden-ratio'
 Plugin 'suan/vim-instant-markdown'
 Plugin 'ngmy/vim-rubocop'
 Plugin 'tpope/vim-rails'
@@ -40,21 +33,15 @@ Plugin 'rking/ag.vim'
 Plugin 'ervandew/supertab'
 Plugin 'chriskempson/base16-vim'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'rodjek/vim-puppet'
+Plugin 'jgdavey/vim-blockle'
+Plugin 'jreybert/vimagit'
+Plugin 'idanarye/vim-merginal'
 " All of your Plugins must be added before the following line
 
 call vundle#end()            " required
 
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
 "speed up escape
@@ -73,6 +60,7 @@ set showcmd       " display incomplete commands
 set incsearch     " do incremental searching
 set laststatus=2  " Always display the status line
 set autowrite     " Automatically :write before running commands
+set ignorecase    " So that supertab doesn't give tag not sorted error with nvim
 
 " RSpec.vim mappings
 map <Leader>t :call RunCurrentSpecFile()<CR>
@@ -81,20 +69,9 @@ map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 "colorscheme
 colorscheme gruvbox
-
-"Base 16 colourchemes
-" colorscheme base16-default
-" let base16colorspace=256
 set background=dark
 
-" colorscheme molokai
-" colorscheme mod8
-" colorscheme sourcerer
-" let g:gruvbox_termcolors=16
-
-"get rid of yellow line in neovim
-set nohlsearch
-
+set nohlsearch "get rid of yellow line in neovim
 
 "Vim tmux runner
 nnoremap <leader>irb :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'irb'}<cr>
@@ -105,15 +82,12 @@ nnoremap <leader>sa :VtrSendFile<cr>
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
-" automatically rebalance windows on vim resize
-autocmd VimResized * :wincmd =
+
+autocmd VimResized * :wincmd = " automatically rebalance windows on vim resize
 
 " zoom a vim pane, <C-w>= to re-balance
 nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
 nnoremap <leader>= :wincmd =<cr>
-
-" Switch syntax highlighting on, when the terminal has colors
-
 
 " Also switch on highlighting the last used search pattern.
 if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
@@ -186,12 +160,12 @@ endif
 
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " bind \ (backward slash) to grep shortcut
+
 " command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<SPACE>
 " Make it obvious where 80 characters is
 set textwidth=80
 set colorcolumn=+1
-
 
 " Numbers
 set number
@@ -241,13 +215,10 @@ nmap gr o<ESC>kO<ESC>j
 "insert require pry
 nmap <leader>py orequire "pry"; binding.pry<ESC>
 " vim-rspec mappings
-" let g:rspec_command = "!bundle exec rspec {spec}" 
 let g:rspec_command = "call VtrSendCommand('be rspec {spec}')"
-" let g:rspec_command = "VtrSendCommandToRunner!('bundle exec rspec {spec}')"
 nnoremap <Leader>t :call RunCurrentSpecFile()<CR>
 nnoremap <Leader>s :call RunNearestSpec()<CR>
 nnoremap <Leader>l :call RunLastSpec()<CR>
-
 nnoremap <leader>va :VtrAttachToPane<cr>
 
 " Run commands that require an interactive shell
