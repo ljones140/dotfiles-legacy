@@ -13,7 +13,6 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdTree'
-Plugin 'scrooloose/syntastic'
 Plugin 'thoughtbot/vim-rspec'
 Plugin 'morhetz/gruvbox'
 Plugin 'tpope/vim-fugitive'
@@ -39,6 +38,10 @@ Plugin 'jgdavey/vim-blockle'
 Plugin 'jreybert/vimagit'
 Plugin 'idanarye/vim-merginal'
 Plugin 'elixir-lang/vim-elixir'
+Plugin 'tpope/vim-haml'
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-rbenv'
+Plugin 'floobits/floobits-neovim'
 " All of your Plugins must be added before the following line
 
 call vundle#end()            " required
@@ -124,6 +127,7 @@ augroup vimrcEx
 
   " Enable spellchecking for Markdown
   autocmd FileType markdown setlocal spell
+  autocmd FileType cucumber setlocal spell
 
   " Automatically wrap at 80 characters for Markdown
   autocmd BufRead,BufNewFile *.md setlocal textwidth=80
@@ -280,6 +284,8 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_mode_map = { 'passive_filetypes': ['cucumber'] }
+" let g:syntastic_disabled_filetypes=['cucumber']
 " Set spellfile to location that is guaranteed to exist, can be symlinked to
 " Dropbox or kept in Git and managed outside of thoughtbot/dotfiles using rcm.
 set spellfile=$HOME/.vim-spell-en.utf-8.add

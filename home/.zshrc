@@ -1,3 +1,8 @@
+# system-wide environment settings for zsh(1)
+if [ -x /usr/libexec/path_helper ]; then
+	eval `/usr/libexec/path_helper -s`
+fi
+
 . `brew --prefix`/etc/profile.d/z.sh
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/ljones/.oh-my-zsh
@@ -45,7 +50,9 @@ alias be='bundle exec'
 alias tas='tmux attach-session -t'
 alias tagme='ctags -R --languages=ruby --exclude=.git --exclude=log .'
 alias btagme='ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)'
+alias buildst='git semaphore -s | jq '' .result'''
 #env
 source ~/.env
+source ~/.after_sbrc
 export NVM_DIR="/Users/ljones/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
