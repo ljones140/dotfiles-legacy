@@ -42,6 +42,8 @@ Plugin 'tpope/vim-haml'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-rbenv'
 Plugin 'floobits/floobits-neovim'
+Plugin 'tpope/vim-bundler'
+Plugin 'tpope/gem-ctags'
 " All of your Plugins must be added before the following line
 
 call vundle#end()            " required
@@ -67,11 +69,6 @@ set laststatus=2  " Always display the status line
 set autowrite     " Automatically :write before running commands
 set ignorecase    " So that supertab doesn't give tag not sorted error with nvim
 
-" RSpec.vim mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
 "colorscheme
 colorscheme gruvbox
 set background=dark
@@ -220,11 +217,13 @@ nmap gr o<ESC>kO<ESC>j
 
 "insert require pry
 nmap <leader>py orequire "pry"; binding.pry<ESC>
+
 " vim-rspec mappings
 let g:rspec_command = "call VtrSendCommand('be rspec {spec}')"
 nnoremap <Leader>t :call RunCurrentSpecFile()<CR>
 nnoremap <Leader>s :call RunNearestSpec()<CR>
 nnoremap <Leader>l :call RunLastSpec()<CR>
+nnoremap <Leader>a :call RunAllSpecs()<CR>
 nnoremap <leader>va :VtrAttachToPane<cr>
 
 " Run commands that require an interactive shell
@@ -271,21 +270,6 @@ nnoremap <C-l> <C-w>l
 nnoremap j gj
 nnoremap k gk
 
-" configure syntastic syntax checking to check on open as well as save
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_ruby_checkers = ['mri', 'rubocop']
-let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
-let g:syntastic_eruby_ruby_quiet_messages =
-    \ {"regex": "possibly useless use of a variable in void context"}
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_mode_map = { 'passive_filetypes': ['cucumber'] }
-" let g:syntastic_disabled_filetypes=['cucumber']
 " Set spellfile to location that is guaranteed to exist, can be symlinked to
 " Dropbox or kept in Git and managed outside of thoughtbot/dotfiles using rcm.
 set spellfile=$HOME/.vim-spell-en.utf-8.add

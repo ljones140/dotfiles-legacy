@@ -12,7 +12,8 @@ export EDITOR='vim'
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME=agnoster
+# ZSH_THEME=agnoster
+ZSH_THEME=geometry
 DEFAULT_USER=ljones
 
 
@@ -26,8 +27,21 @@ plugins=(git brew npm ruby bundler zsh-autosuggestions)
 # User configuration
 . `brew --prefix`/etc/profile.d/z.sh
 
-export PATH="$HOME/.rbenv/bin:$PATH:$HOME/bin"
-eval "$(rbenv init -)"
+# ensure dotfiles bin directory is loaded first
+PATH="$HOME/.bin:/usr/local/sbin:$PATH:$HOME/bin"
+
+# load rbenv if available
+if command -v rbenv >/dev/null; then
+  eval "$(rbenv init - --no-rehash)"
+fi
+
+# mkdir .git/safe in the root of repositories you trust
+PATH=".git/safe/../../bin:$PATH"
+
+export -U PATH
+
+# export PATH="$HOME/.rbenv/bin:$PATH:$HOME/bin"
+# eval "$(rbenv init -)"
 source $ZSH/oh-my-zsh.sh
 export PROJECTS_HOME=${HOME}/projects
 
@@ -46,7 +60,6 @@ alias go='git checkout '
 alias gk='gitk --all&'
 alias gx='gitx --all'
 alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
-alias be='bundle exec'
 alias tas='tmux attach-session -t'
 alias tagme='ctags -R --languages=ruby --exclude=.git --exclude=log .'
 alias btagme='ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)'
