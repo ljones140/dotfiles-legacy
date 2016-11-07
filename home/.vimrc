@@ -44,6 +44,8 @@ Plugin 'tpope/vim-rbenv'
 Plugin 'floobits/floobits-neovim'
 Plugin 'tpope/vim-bundler'
 Plugin 'tpope/gem-ctags'
+Plugin 'tpope/vim-repeat'
+
 " All of your Plugins must be added before the following line
 
 call vundle#end()            " required
@@ -83,7 +85,6 @@ nnoremap <leader>sa :VtrSendFile<cr>
 "Airline config"
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-
 
 autocmd VimResized * :wincmd = " automatically rebalance windows on vim resize
 
@@ -203,6 +204,8 @@ map <Leader>ct :!ctags -R .<CR>
 map <C-n> :NERDTreeToggle<CR>
 " Switch between the last two files
 nnoremap <leader><leader> <c-^>
+" Find file in tree
+nnoremap <leader>nf :NERDTreeFind<CR>
 
 " Get off my lawn
 nnoremap <Left> :echoe "Use h"<CR>
