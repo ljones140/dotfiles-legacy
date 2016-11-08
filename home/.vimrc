@@ -45,6 +45,7 @@ Plugin 'floobits/floobits-neovim'
 Plugin 'tpope/vim-bundler'
 Plugin 'tpope/gem-ctags'
 Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-obsession'
 
 " All of your Plugins must be added before the following line
 
