@@ -46,6 +46,7 @@ Plugin 'tpope/vim-bundler'
 Plugin 'tpope/gem-ctags'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-obsession'
+Plugin 'wfleming/vim-codeclimate'
 
 " All of your Plugins must be added before the following line
 
@@ -224,11 +225,15 @@ nmap <leader>py orequire "pry"; binding.pry<ESC>
 
 " vim-rspec mappings
 let g:rspec_command = "call VtrSendCommand('be rspec {spec}')"
+"use spring to run tests if project has spring
+autocmd VimEnter * if filereadable("bin/spring") | let g:rspec_command = "call VtrSendCommand('be spring rspec {spec}')" | endif
+
 nnoremap <Leader>t :call RunCurrentSpecFile()<CR>
 nnoremap <Leader>s :call RunNearestSpec()<CR>
 nnoremap <Leader>l :call RunLastSpec()<CR>
 nnoremap <Leader>a :call RunAllSpecs()<CR>
 nnoremap <leader>va :VtrAttachToPane<cr>
+
 
 " Run commands that require an interactive shell
 nnoremap <Leader>r :RunInInteractiveShell<space>

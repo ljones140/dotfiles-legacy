@@ -3,7 +3,12 @@ if [ -x /usr/libexec/path_helper ]; then
 	eval `/usr/libexec/path_helper -s`
 fi
 
+export PATH="/usr/local/sbin:$PATH"
+# eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/bin:$PATH"
+
 . `brew --prefix`/etc/profile.d/z.sh
+
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/ljones/.oh-my-zsh
 
@@ -16,7 +21,6 @@ export EDITOR='vim'
 # ZSH_THEME=agnoster
 ZSH_THEME=geometry
 DEFAULT_USER=ljones
-
 
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/base16-default.dark.sh"
@@ -50,6 +54,7 @@ export PROJECTS_HOME=${HOME}/projects
 # 10ms for key sequences
 KEYTIMEOUT=1
 
+ssh-add -A &> /dev/null
 alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
 alias gs='git status '
