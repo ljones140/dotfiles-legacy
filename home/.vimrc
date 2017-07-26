@@ -76,8 +76,10 @@ set autowrite     " Automatically :write before running commands
 set ignorecase    " So that supertab doesn't give tag not sorted error with nvim
 
 "colorscheme
-colorscheme gruvbox
-set background=dark
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
 
 set nohlsearch "get rid of yellow line in neovim
 
