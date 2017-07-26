@@ -17,17 +17,20 @@ export EDITOR='vim'
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-# ZSH_THEME=agnoster
-ZSH_THEME=geometry
-DEFAULT_USER=ljones
+ZSH_THEME='geometry/geometry'
+export PROMPT_GEOMETRY_COLORIZE_SYMBOL=true
+export PROMPT_GEOMETRY_COLORIZE_ROOT=true
+export PROMPT_GEOMETRY_EXEC_TIME=true
+
+# DEFAULT_USER=ljones
+DEFAULT_USER=lewis.jones
 
 # Base16 Shell
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 #plugins
-plugins=(git brew npm ruby bundler zsh-autosuggestions)
-
+plugins=(git brew npm ruby bundler zsh-autosuggestions dotenv)
 # User configuration
 . `brew --prefix`/etc/profile.d/z.sh
 
@@ -70,5 +73,6 @@ alias buildst='git semaphore -s | jq '' .result'''
 #env
 source ~/.env
 source ~/.after_sbrc
-export NVM_DIR="/Users/ljones/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+export NVM_DIR="$HOME/.nvm"
+. "/usr/local/opt/nvm/nvm.sh"
