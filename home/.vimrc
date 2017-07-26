@@ -309,6 +309,9 @@ function! s:align()
   endif
 endfunction
 
+" vim Conflicted status lin integration
+set stl+=%{ConflictedVersion()}
+
 " Always use vertical diffs
 set diffopt+=vertical
 " ctlp p install
