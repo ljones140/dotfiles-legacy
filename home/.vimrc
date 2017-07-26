@@ -245,7 +245,9 @@ nnoremap <leader>va :VtrAttachToPane<cr>
 nnoremap <Leader>r :RunInInteractiveShell<space>
 
 " Buffers
-:nnoremap <F5> :buffers<CR>:buffer<Space>
+:nmap <F5> :buffers<CR>:buffer<Space>
+:nmap ] :bnext<CR>
+:nmap [ :bprevious<CR>
 
 "ctage Ctrl-p
 nnoremap <leader>. :CtrlPTag<cr>
