@@ -47,6 +47,8 @@ Plugin 'tpope/gem-ctags'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-obsession'
 Plugin 'wfleming/vim-codeclimate'
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
 
 " All of your Plugins must be added before the following line
 
@@ -124,6 +126,7 @@ augroup vimrcEx
   " Set syntax highlighting for specific file types
   autocmd BufRead,BufNewFile Appraisals set filetype=ruby
   autocmd BufRead,BufNewFile *.md set filetype=markdown
+  autocmd BufRead,BufNewFile *.es6 set filetype=javascript
 
   " Enable spellchecking for Markdown
   autocmd FileType markdown setlocal spell
@@ -199,6 +202,9 @@ inoremap <S-Tab> <c-n>
 
 " Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
+
+" vim-jsx syntax highlighting for jsx in .js
+let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " Index ctags from any project, including those outside Rails
 map <Leader>ct :!ctags -R .<CR>
