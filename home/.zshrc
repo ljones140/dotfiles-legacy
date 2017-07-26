@@ -4,13 +4,12 @@ if [ -x /usr/libexec/path_helper ]; then
 fi
 
 export PATH="/usr/local/sbin:$PATH"
-# eval "$(rbenv init -)"
 export PATH="$HOME/.rbenv/bin:$PATH"
 
 . `brew --prefix`/etc/profile.d/z.sh
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/ljones/.oh-my-zsh
+export ZSH=/Users/lewis.jones/.oh-my-zsh
 
 export EDITOR='vim'
 
@@ -45,8 +44,6 @@ PATH=".git/safe/../../bin:$PATH"
 
 export -U PATH
 
-# export PATH="$HOME/.rbenv/bin:$PATH:$HOME/bin"
-# eval "$(rbenv init -)"
 source $ZSH/oh-my-zsh.sh
 export PROJECTS_HOME=${HOME}/projects
 
