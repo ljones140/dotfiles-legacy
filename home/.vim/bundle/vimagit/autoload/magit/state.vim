@@ -68,6 +68,7 @@ endfunction
 " WARNING: this variable must be deepcopy()'ied
 let s:hunk_template = {
 \	'header': '',
+\	'line_pos': 0,
 \	'lines': [],
 \	'marks': [],
 \}
@@ -94,6 +95,7 @@ let s:file_template = {
 \	'submodule': 0,
 \	'symlink': '',
 \	'diff': s:diff_template,
+\	'line_pos': 0,
 \	'is_dir': function("magit#state#is_file_dir"),
 \	'is_visible': function("magit#state#is_file_visible"),
 \	'set_visible': function("magit#state#set_file_visible"),
@@ -273,7 +275,7 @@ function! magit#state#update() dict
 
 	let dir = getcwd()
 	try
-		call magit#utils#lcd(magit#git#top_dir())
+		call magit#utils#chdir(magit#git#top_dir())
 		call magit#utils#refresh_submodule_list()
 		for [mode, diff_dict_mode] in items(self.dict)
 			let status_list = magit#git#get_status()
@@ -288,7 +290,7 @@ function! magit#state#update() dict
 			endfor
 		endfor
 	finally
-		call magit#utils#lcd(dir)
+		call magit#utils#chdir(dir)
 	endtry
 
 	" remove files that have changed their mode or been committed/deleted/discarded...
@@ -319,22 +321,30 @@ function! magit#state#get_files(mode) dict
 	return self.dict[a:mode]
 endfunction
 
-" magit#state#get_filenames: global dict filenames getter function
+" magit#state#get_files: global dict file objects (copy) getter function
 " param[in] mode: mode to select, can be 'staged' or 'unstaged'
-" return ordered list of filename strings belonging to mode, modified files
-" first
-function! magit#state#get_filenames(mode) dict
+" return ordered list of file objects belonging to mode
+function! magit#state#get_files_ordered(mode) dict
 	let modified = []
 	let others = []
 	for filename in sort(keys(self.dict[a:mode]))
 		let file = self.get_file(a:mode, filename)
 		if ( file.status == 'M' )
-			call add(modified, filename)
+			call add(modified, file)
 		else
-			call add(others, filename)
+			call add(others, file)
 		endif
 	endfor
 	return modified + others
+endfunction
+
+" magit#state#get_filenames: global dict filenames getter function
+" param[in] mode: mode to select, can be 'staged' or 'unstaged'
+" return ordered list of filename strings belonging to mode, modified files
+" first
+function! magit#state#get_filenames(mode) dict
+	let files = self.get_files_ordered(a:mode)
+	return map(copy(files), 'v:val.filename')
 endfunction
 
 
@@ -356,6 +366,7 @@ let magit#state#state = {
 			\ 'nb_diff_lines': 0,
 			\ 'get_file': function("magit#state#get_file"),
 			\ 'get_files': function("magit#state#get_files"),
+			\ 'get_files_ordered': function("magit#state#get_files_ordered"),
 			\ 'get_filenames': function("magit#state#get_filenames"),
 			\ 'add_file': function("magit#state#add_file"),
 			\ 'set_files_visible': function("magit#state#set_files_visible"),

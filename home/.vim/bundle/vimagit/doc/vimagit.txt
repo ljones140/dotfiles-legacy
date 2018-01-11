@@ -53,8 +53,8 @@ repository and open vim.
 > :Magit
 Open magit buffer with :Magit command.
 
-> N
-Jump to next hunk with N. The cursor should be on the header of a hunk.
+> <C-n>
+Jump to next hunk with <C-n>. The cursor should be on the header of a hunk.
 
 > S
 If the hunk is in "Unstage changes" section, press S in Normal mode: the
@@ -65,13 +65,40 @@ If you move the cursor to the file header and press S, the whole file is
 staged.
 
 > CC
-Once you have stage all the required changes, press CC. A new section "Commit
-message" appears and cursor move to it. Type your commit message, in Insert
-mode this time. Once it's done, go back in Normal mode, and press CC: you
-created your first commit with vimagit!
+Once you have stage all the required changes, type CC. A new section
+`Commit message` appears and cursor move to it. Type your commit message, in
+Insert mode this time. Once it's done, write your commit message with :w (or
+:x, :wq, ZZ).
+
+Voila! you created your first commit with vimagit!
 
 ===============================================================================
 4. USAGE                                                         *vimagit-usage*
+
+MODES                                                            *vimagit-modes*
+
+vimagit buffer has modes. Mappings may have different behavior, depending on
+current mode and curosr position.
+
+For the moment, vimagit counts only two modes.
+
+STAGE MODE                                                  *vimagit-stage-mode*
+
+This is the default mode. In this mode, you can stage and unstage hunks,
+refresh vimagit buffer...
+
+COMMIT MODE                                                *vimagit-commit-mode*
+
+In this mode, `Commit message` section is open, you can write your commit
+message and validate your commit.
+Commit mode has two flavors.
+
+* `normal`: current commit will be a new commit.
+* `amend`: current commit will be meld with previous commit.
+  * Previous commit message is shown in `Commit message` section.
+  * Use this flavor if you forgot something in the previous commit.
+
+By the way, you can also perform all stage mode actions in commit mode.
 
 SECTIONS                                                      *vimagit-sections*
 
@@ -144,7 +171,14 @@ variable is described below as           *vimagit-g:magit_nameofmapping_mapping*
 
 For example, to redefine the <leader>M mapping, user should add this line in
 its |vimrc|:
-let g:magit_show_magit_mapping='itsnewmapping'
+let g:magit_show_magit_mapping='m'
+
+Mapping update                                          *vimagit-mapping-update*
+--------------
+
+Since vimagit 1.7, jump mappings have changed:
+   Jump next hunk : N -> <C-n>
+   Jump prev hunk : P -> <C-p>
 
 Global mappings
 ---------------
@@ -206,14 +240,14 @@ Following mappings are set locally, for magit buffer only, in normal mode.
             To staged marked lines, press S (see |vimagit-S|) in the current
             hunk.
 
-                                    *vimagit-DDD*            *magit#stage_hunk(1)*
+                                    *vimagit-DDD*           magit#stage_hunk(1)*
                                     *vimagit-g:magit_discard_hunk_mapping*
   DDD       If cursor is in a hunk, discard hunk at cursor position.
             If cursor is in diff header, discard whole file at cursor
             position.
             Only works in "Unstaged changes" section.
 
-                                    *vimagit-E*                  *magit#jump_to()*
+                                    *vimagit-E*                *magit#jump_to()*
   E         If cursor is in a hunk, cursor will move in the file containing
             this hunk, at the line of the beginning of the hunk.
              - if the file is already visible in a |window|, cursor moves to
@@ -225,47 +259,60 @@ Following mappings are set locally, for magit buffer only, in normal mode.
             E means 'edit'.
             NOTE: this function is extremely powerful, just give it a try!
 
-                                    *vimagit-N*                *magit#jump_hunk()*
-                                    *vimagit-P*
-  N,P       Move to Next or Previous hunk.
+                                    *vimagit-<C-n>*          *magit#jump_hunk()*
+                                    *vimagit-<C-p>*
+                                    *vimagit-g:magit_jump_next_hunk*
+                                    *vimagit-g:magit_jump_prev_hunk*
+  <C-n>,<C-p>  Move to Next or Previous hunk.
 
-                                    *vimagit-CC*      *magit#commit_command('CC')*
+                                    *vimagit-CC*    *magit#commit_command('CC')*
                                     *vimagit-g:magit_commit_mapping*
-  CC        If not in commit section, set commit mode to "New commit" and show 
-           "Commit message" section with brand new commit message.
-            If in commit section, commit the all staged changes in commit mode
-            previously set.
+  CC        From `stage mode`, set commit mode in `normal` flavor and show empty
+            "Commit message" section.
+            From `commit mode`, commit all staged changes with commit flavor
+            (`normal` or `amend`) with message in "Commit message" section.
 
-                                    *vimagit-CA*      *magit#commit_command('CA')*
+                                    *vimagit-:w*
+  :w :x :wq ZZ
+            From `commit mode`, commit all staged changes with commit flavor
+            (`normal` or `amend`) with message in "Commit message" section.
+
+                                    *vimagit-CA*    *magit#commit_command('CA')*
                                     *vimagit-g:magit_commit_amend_mapping*
-  CA        If not in commit section, set commit mode to "Amend commit" and
-            show "Commit message" section with previous commit message.
-            If in commit section, commit the staged changes in commit mode
-            previously set.
+  CA        From `stage mode` or `commit mode`: set commit mode in amend
+            flavor, and display "Commit message" section with previous commit
+            message.
+            Commit will be meld with previous commit.
 
-                                    *vimagit-CF*      *magit#commit_command('CF')*
+                                    *vimagit-CF*    *magit#commit_command('CF')*
                                     *vimagit-g:magit_commit_fixup_mapping*
-  CF        Amend the staged changes into the previous commit, without
-            modifying previous commit message
+  CF        From `stage mode`: amend the staged changes into the previous
+            commit, without modifying previous commit message.
 
                                     *vimagit-CU*      *magit#close_commit()*
                                     *vimagit-g:magit_close_commit_mapping*
-  CU        Close a commit section (If you need soon after open or editing
-            Ucommit message, pressing 'u' is good enough).
+  CU        From `commit mode`: go back to stage mode (current commit message
+            will be lost).
 
-                                    *vimagit-I*              *magit#ignore_file()*
+                                    *vimagit-I*            *magit#ignore_file()*
                                     *vimagit-g:magit_ignore_mapping*
   I         Add the file under the cursor in .gitgnore
 
-                                    *vimagit-R*            *magit#update_buffer()*
+                                    *vimagit-R*          *magit#update_buffer()*
                                     *vimagit-g:magit_reload_mapping*
   R         Refresh magit buffer.
+
+                                                           *magit#update_diff()*
+                                    *vimagit--* *vimagit-g:magit_diff_shrink*
+                                    *vimagit-+* *vimagit-g:magit_diff_enlarge*
+                                    *vimagit-0* *vimagit-g:magit_diff_reset*
+  -,+,0     Shrink,enlarge,reset diff context
 
                                     *vimagit-q*
                                     *vimagit-g:magit_close_mapping*
   q         close magit buffer.
 
-                                    *vimagit-?*              *magit#toggle_help()*
+                                    *vimagit-?*            *magit#toggle_help()*
                                     *vimagit-g:magit_toggle_help_mapping*
   ?         Toggle help showing in magit buffer
 
@@ -291,16 +338,27 @@ This event is raised each time a file status is updated in magit buffer
 |g:magit_last_updated_buffer| is set to the last updated file, with its
 absolute path.
 
-Note: |g:magit_last_updated_buffer| will be updated and VimagitUpdateFile event will
-be raised only if the buffer is currently opened in vim.
+Note: |g:magit_last_updated_buffer| will be updated and VimagitUpdateFile event
+will be raised only if the buffer is currently opened in vim.
 
-VimagitCommitEnter                                  *vimagit-VimagitCommitEnter*
+VimagitEnterCommit                                  *vimagit-VimagitEnterCommit*
 
 This event is raised when the commit section opens and the cursor is
 placed in this section. For example, the user may want to go straight into
-insert mode when committing, defining this |autocmd| in its vimrc:
+insert mode when committing, defining this |autocmd| in vimrc:
 >
   autocmd User VimagitEnterCommit startinsert
+<
+
+VimagitLeaveCommit                                  *vimagit-VimagitLeaveCommit*
+
+This event is raised when the commit section is closed, because the user
+finished to write its commit message or canceled it. For example, the user
+wants to set the |textwidth| of the vimagit buffer while editing a commit
+message, defining these |autocmd| in vimrc:
+>
+  autocmd User VimagitEnterCommit setlocal textwidth=72
+  autocmd User VimagitLeaveCommit setlocal textwidth=0
 <
 
 Autocmd example                                        *vimagit-autocmd_example*
@@ -337,6 +395,13 @@ let g:magit_git_cmd="git"
 To disable chatty inline help in magit buffer (default 1)
 let g:magit_show_help=[01]
 
+                                            *vimagit-g:magit_commit_title_limit*
+
+Text is grayed if first line of commit message exceed this number of character
+(default 50)
+
+let g:magit_commit_title_limit=[0..300]
+
                                         *vimagit-g:magit_default_show_all_files*
 When this variable is set to 0, all diff files are hidden by default.
 When this variable is set to 1, all diff for modified files are shown by default.
@@ -352,6 +417,12 @@ When set to 1, filenames are unfolded and hunks are folded.
 When set to 2, filenames and hunks are unfolded.
 Default value is 1.
 let g:magit_default_fold_level=[012]
+
+                                                  *vimagit-g:magit_auto_foldopen*
+When stage/unstage a hunk, cursor goes to the closest hunk in the same section.
+This option automatically opens the fold of the hunk cursor has jump to.
+Default value is 1.
+let g:magit_auto_foldopen=[01]
 
                                               *vimagit-g:magit_default_sections*
 With this variable, the user is able to choose which sections are displayed in

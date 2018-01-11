@@ -16,7 +16,9 @@ Plugin 'scrooloose/nerdTree'
 Plugin 'thoughtbot/vim-rspec'
 Plugin 'morhetz/gruvbox'
 Plugin 'tpope/vim-fugitive'
-Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-rhubarb'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-surround'
 Plugin 'jlanzarotta/bufexplorer'
@@ -233,6 +235,8 @@ nmap <leader>py orequire "pry"; binding.pry<ESC>
 
 " vim-rspec mappings
 let g:rspec_command = "call VtrSendCommand('be rspec {spec}')"
+"use spring to run tests if project has spring
+autocmd VimEnter * if filereadable("bin/spring") | let g:rspec_command = "call VtrSendCommand('be spring rspec {spec}')" | endi
 
 nnoremap <Leader>t :call RunCurrentSpecFile()<CR>
 nnoremap <Leader>s :call RunNearestSpec()<CR>
@@ -320,3 +324,7 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
+
+" presistant undo
+set undodir=~/.vim/undodir
+set undofile   " Maintain undo history between sessions

@@ -50,7 +50,7 @@ endfunction
 function! magit#git#is_work_tree(path)
 	let dir = getcwd()
 	try
-		call magit#utils#lcd(a:path)
+		call magit#utils#chdir(a:path)
 		let top_dir=magit#utils#strip(
 					\ system(g:magit_git_cmd . " rev-parse --show-toplevel")) . "/"
 		if ( v:shell_error != 0 )
@@ -58,7 +58,7 @@ function! magit#git#is_work_tree(path)
 		endif
 		return top_dir
 	finally
-		call magit#utils#lcd(dir)
+		call magit#utils#chdir(dir)
 	endtry
 endfunction
 
@@ -68,7 +68,7 @@ endfunction
 function! magit#git#set_top_dir(path)
 	let dir = getcwd()
 	try
-		call magit#utils#lcd(a:path)
+		call magit#utils#chdir(a:path)
 		let top_dir=magit#utils#strip(
 					\ system(g:magit_git_cmd . " rev-parse --show-toplevel")) . "/"
 		if ( v:shell_error != 0 )
@@ -81,7 +81,7 @@ function! magit#git#set_top_dir(path)
 		let b:magit_top_dir=top_dir
 		let b:magit_git_dir=git_dir
 	finally
-		call magit#utils#lcd(dir)
+		call magit#utils#chdir(dir)
 	endtry
 endfunction
 
@@ -117,8 +117,8 @@ function! magit#git#git_diff(filename, status, mode)
 	let dev_null = ( a:status == '?' ) ? "/dev/null " : ""
 	let staged_flag = ( a:mode == 'staged' ) ? "--staged" : ""
 	let git_cmd=g:magit_git_cmd . " diff --no-ext-diff " . staged_flag .
-				\ " --no-color -p -- " . dev_null . " "
-				\ . a:filename
+				\ " --no-color -p -U" . b:magit_diff_context .
+				\ " -- " . dev_null . " " . a:filename
 	silent let diff_list=magit#utils#systemlist(git_cmd)
 	if ( a:status != '?' && v:shell_error != 0 )
 		echohl WarningMsg
@@ -276,6 +276,42 @@ function! magit#git#git_unapply(header, selection, mode)
 	endif
 endfunction
 
+" magit#git#submodule_status: helper function to return the submodule status
+" return submodule status
 function! magit#git#submodule_status()
 	return system(g:magit_git_cmd . " submodule status")
+endfunction
+
+" magit#git#get_branch_name: get the branch name given a reference
+" WARNING does not seem to work with SHA1
+" param[in] ref can be HEAD or a branch name
+" return branch name
+function! magit#git#get_branch_name(ref)
+	return magit#utils#strip(magit#utils#system(g:magit_git_cmd . " rev-parse --abbrev-ref " . a:ref))
+endfunction
+
+" magit#git#get_commit_subject: get the subject of a commit (first line)
+" param[in] ref: reference, can be SHA1, brnach name or HEAD
+" return commit subject
+function! magit#git#get_commit_subject(ref)
+	silent let git_result=magit#utils#strip(magit#utils#system(g:magit_git_cmd . " show --no-patch --format=\"%s\" " . a:ref))
+	if ( v:shell_error != 0 )
+		return ""
+	endif
+	return git_result
+endfunction
+
+" magit#git#get_remote_branch: get the branch name of the default remote, for
+" upstream and push
+" WARNING does not work with SHA1
+" param[in] ref: reference, can be HEAD or branch name
+" param[in] type: type of default remote: upstream or push
+" return the remote branch name, 'none' if it has not
+function! magit#git#get_remote_branch(ref, type)
+	silent let git_result=magit#utils#strip(magit#utils#system(
+		\ g:magit_git_cmd . " rev-parse --abbrev-ref=loose " . a:ref . "@{" . a:type . "}"))
+	if ( v:shell_error != 0 )
+		return "none"
+	endif
+	return git_result
 endfunction

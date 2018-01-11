@@ -5,6 +5,7 @@ fi
 
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.rbenv/shims":$PATH
 
 . `brew --prefix`/etc/profile.d/z.sh
 
@@ -76,3 +77,8 @@ source ~/.after_sbrc
 
 export NVM_DIR="$HOME/.nvm"
 . "/usr/local/opt/nvm/nvm.sh"
+export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
+
+. $HOME/.asdf/asdf.sh
+
+. $HOME/.asdf/completions/asdf.bash

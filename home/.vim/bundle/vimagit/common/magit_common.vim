@@ -3,18 +3,19 @@
 " selection
 let g:magit_sections = {
  \ 'info':           'Info',
+ \ 'help':           'Help',
  \ 'staged':         'Staged changes',
  \ 'unstaged':       'Unstaged changes',
- \ 'commit_start':   'Commit message',
- \ 'commit_end':     'Commit message end',
+ \ 'commit':         'Commit message',
  \ 'stash':          'Stash list'
  \ }
 
 let g:magit_section_info = {
- \ 'cur_repo':       'Current repository',
- \ 'cur_branch':     'Current branch',
- \ 'cur_commit':     'Last commit',
- \ 'commit_mode':    'Commit mode',
+ \ 'cur_repo':       'Repository:',
+ \ 'cur_head':       'Head:',
+ \ 'cur_upstream':   'Upstream:',
+ \ 'cur_push':       'Push:',
+ \ 'commit_mode':    'Commit mode:',
  \ }
 
 let g:magit_git_status_code = {

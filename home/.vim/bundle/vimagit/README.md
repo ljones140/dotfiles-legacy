@@ -1,21 +1,24 @@
 # vimagit
 
-Ease your git worflow within vim.
+[![Join the chat at https://gitter.im/jreybert/vimagit](https://badges.gitter.im/jreybert/vimagit.svg)][4]
+[![Master build status](https://travis-ci.org/jreybert/vimagit.svg?branch=master)][13]
+
+Ease your git workflow within vim.
 
 From a very single vim buffer, you can perform main git operations in few key press. To name a few:
 * Visualize all diffs in your git repository.
 * Stage file, hunks or even just parts of a hunk using a single key press.
 * Write or amend your commit message and commit in the same buffer.
 
-![Example of vimagit 1.5.1](../gh-pages/images/vimagit_screenshot_1.5.1.png?raw=true "Example of vimagit 1.5.1")
+Take a look at [TL;DR](#tldr) to start using it immediately.
+
+![Example of vimagit 1.7.2](https://user-images.githubusercontent.com/533068/28827790-ee0ec640-76ce-11e7-840b-10a4f5e4eae4.gif "Example of vimagit 1.7.2")
 
 Some screencasts:
-* A simple [asciicast](https://asciinema.org/a/28761)
-* A [commented video presenting vimagit](https://youtu.be/_3wMmmVi6bU) (thank you [Mike Hartington](https://github.com/mhartington)!)
+* A simple [asciicast][5]
+* A [commented video presenting vimagit][6] (thank you [Mike Hartington][7]!)
 
-This workflow is 100% inspired from magnificent emacs [Magit](https://github.com/magit/magit) plugin.
-
-Take a look at [TL;DR](#tldr) to start using it immediately.
+This workflow is 100% inspired from magnificent emacs [Magit][1] plugin.
 
 ## Outstanding features
 
@@ -24,7 +27,8 @@ Take a look at [TL;DR](#tldr) to start using it immediately.
 * [x] Stage/unstage at file/hunk/line level.
 * [x] Write the commit message in the same buffer.
 * [x] From a hunk in magit buffer, jump to the file at the diff position.
-* [x] Update vim-gitgutter signs when git status is updated.
+* [x] 100% VimL plugin, no external dependency (except git of course).
+* [x] Enhanced by external plugins: [vim-gitgutter][2] [vim-airline][8]
 * [x] Stable. All features are tested in continuous integration.
 
 More to come:
@@ -34,51 +38,94 @@ More to come:
 * [ ] Stage multiple hunks or file by visually selecting them #83 .
 * [ ] Go through history, cherry-pick changes.
 * [ ] Make vimagit more efficient for huge repositories, with a lot of diffs.
-* [ ] Something is missing? Open an [issue](https://github.com/jreybert/vimagit/issues/new)!
+* [ ] Something is missing? Open an [issue][9]!
 
 > Why should I use vimagit, there are already plethora git plugins for vim?
 
 * fugitive is a very complete plugin, with a lot of functions. I use it for years, and it is a fundamental tool in my workflow. But visualize your changes and staged them in broad number of files is really a pain.
-* vim-gitgutter is very well integrated into vim, but without the ability to commit stages, it stays an informational plugin.
-
-## Integration
-
-Branches [master](https://github.com/jreybert/vimagit/) and [next](https://github.com/jreybert/vimagit/tree/next) are continuously tested on [travis](https://travis-ci.org/jreybert/vimagit) when published on github.
-
-vimagit is tested with various versions of vim on linux: vim 7.3.249, vim 7.4.273, and latest neovim version. It is also tested for macos X: vim, macvim and neovim. Anyway, if you feel that vimagit behaves oddly (slow refresh, weird display order...) please fill an [issue](https://github.com/jreybert/vimagit/issues/new).
-
-For the most enthusiastic, you can try the branch [next](https://github.com/jreybert/vimagit/tree/next). It is quite stable, just check its travis status before fetching it.
-
-Travis status:
-* **[master status](https://travis-ci.org/jreybert/vimagit/branches)**: [![Master build status](https://travis-ci.org/jreybert/vimagit.svg?branch=master)](https://travis-ci.org/jreybert/vimagit/branches)
-* **[next status](https://travis-ci.org/jreybert/vimagit/branches)**: [![next build status](https://travis-ci.org/jreybert/vimagit.svg?branch=next)](https://travis-ci.org/jreybert/vimagit/branches)
-
-A lot a features are developed in dev/feature_name branches. While it may be asked to users to test these branches (during a bug fix for example), one is warned that these branches may be heavily rebased/deleted.
+* [vim-gitgutter][2] is very well integrated into vim, but without the ability to commit stages, it stays an informational plugin.
 
 ## TL;DR
 
-This is the minimal required set of command you must know to start playing with vimagit. See [Mapping](#mapping) for a complete description.
+This is the minimal required set of command you must know to start playing with vimagit. See [Mappings](#mappings) for a complete description.
 
 To simply test vimagit, modify/add/delete/rename some files in a git repository and open vim.
 
-#### :Magit
+- `:Magit`  
+  Open magit buffer with [:Magit](#magitshow_magit) command.
+- `<C-n>`  
+  Jump to next hunk with `<C-n>`, or move the cursor as you like. The cursor is on a hunk.
+- `S`  
+  While the cursor is on an unstaged hunk, press `S` in Normal mode: the hunk is now staged, and appears in "Staged changes" section (you can also unstage a hunk from "Staged section" with `S`).
+- `CC`  
+  Once you have stage all the required changes, press `CC`.
+  - Section "Commit message" is shown.
+  - Type your commit message in this section.
+  - To commit, go back in Normal mode, and press `CC` (or `:w` if you prefer).
+  
+You just created your first commit with vimagit!
 
-Open magit buffer with [:Magit](#magitshow_magit) command.
+## Contribute
 
-#### N
+Any contribution is welcomed. Contribution can be bug fix, new feature, but also feedback or even tutorial! Check contribution rules [here](CONTRIBUTING.md).
 
-* Jump to next hunk with **N**. The cursor should be on the header of a hunk.
+### Release 1.8
 
-#### S
+Now that stage feature is quite mature, I would like to introduce more commands to vimagit. For this, user feedback is very important to me, to ensure that UI is appropriate for the most of users and that vimagit fits most of git workflows (by UI, I mean default mapping, user prompt, etc.).
 
-* If the hunk is in "Unstage changes" section, press **S** in Normal mode: the hunk is now staged, and appears in "Staged changes" section. The opposite is also possible, i.e. unstage a hunk from "Staged section".
-* If you move the cursor to the file header and press **S**, the whole file is staged.
+Proper way to discuss is on [gitter](https://gitter.im/jreybert/vimagit) and on issues opened for the new features.
 
-#### CC
+The next major release of vimagit will see 3 new important features. Interested users are encouraged to discuss the best way to design these new features:
+* **git push**: push from magit buffer with `<CP>`. magit will detect the default push branch; if there is not default, or if the user used another mapping, magit will provide a way to select remote branch to push #24 
+* **git checkout**: checkout a branch with `<CH>`. Like for push, a UI must be designed to select the branch, with completion of course #141 
+* **git stash**: stage what you want (files, hunks, lines, exactly the same way as for a commit), and stash them #142 
 
-Once you have stage all the required changes, press **CC**. A new section "Commit message" appears and cursor move to it. Type your commit message, in Insert mode this time. Once it's done, go back in Normal mode, and press **CC**: you created your first commit with vimagit!
+Thanks for your time.
+
+## Installation
+
+This plugin follows the standard runtime path structure, and as such it can be installed with a variety of plugin managers:
+
+- Pathogen  
+  `git clone https://github.com/jreybert/vimagit ~/.vim/bundle/vimagit`  
+  Remember to run :Helptags to generate help tags
+- NeoBundle  
+  `NeoBundle 'jreybert/vimagit'`
+- Vundle  
+  `Plugin 'jreybert/vimagit'`
+- Plug  
+  `Plug 'jreybert/vimagit'`
+- VAM  
+  `call vam#ActivateAddons([ 'jreybert/vimagit' ])`
+- manual  
+  copy all of the files into your ~/.vim directory
 
 ## Usage
+
+### Modes
+
+vimagit buffer has modes. Mappings may have different behavior, depending on current mode and curosr position.
+
+For the moment, vimagit counts only two modes.
+
+#### Stage mode
+
+This is the default mode. In this mode, you can stage and unstage hunks, refresh vimagit buffer...
+
+#### Commit mode
+
+In this mode, "Commit message" section is open, you can write your commit message and validate your commit.
+
+Commit mode has two flavors.
+
+##### Commit mode flavors
+
+* *Normal*: current commit will be a new commit.
+* *Amend*: current commit will be meld with previous commit.
+  * Previous commit message is shown in "Commit message" section.
+  * Use this flavor if you forgot something in the previous commit.
+
+By the way, you can also perform all [stage mode](stage_mode) actions in [commit mode](commit_mode).
 
 ### Sections
 
@@ -86,7 +133,7 @@ IMPORTANT: mappings can have different meanings regarding the cursor position.
 
 There are 5 sections:
 * Info: this section display some information about the git repository, like the current branch and the HEAD commit.
-* Commit message: this section appears in commit mode (see below). It contains the message to be committed.
+* Commit message: this section appears in [commit mode](commit_mode). It contains the message to be committed.
 * Staged changes: this sections contains all staged files/hunks, ready to commit.
 * Unstaged changes: this section contains all unstaged and untracked files/hunks.
 * Stash list: this section contains all stahes.
@@ -188,7 +235,7 @@ Following mappings are set locally, for magit buffer only, in normal mode.
 ##### E
 If cursor is in a hunk, cursor will move in the file containing this hunk, at
  the line of the beginning of the hunk.
- * if the file is already visible in a |window|, cursor moves to this window at
+ * if the file is already visible in a window, cursor moves to this window at
  the hunk line
  * if there is more than one window open, cursor moves to last accessed window
  and open buffer at the hunk line
@@ -199,22 +246,24 @@ E means 'edit'.
 
 :exclamation: this function is extremely powerful, just give it a try!
 
-##### N,P
+##### \<C-n>,\<C-p>
  * Move to **N**ext or **P**revious hunk.
 
 ##### CC
- * If not in commit section, set commit mode to "New commit" and show "Commit message" section with brand new commit message.
- * If in commit section, commit the all staged changes in commit mode previously set.
+ * From [stage mode](stage_mode), set [commit mode](commit_mode) in [normal flavor](commit_mode_flavors) and show empty "Commit message" section.
+ * From [commit mode](commit_mode), commit all staged changes with [commit flavor](commit_mode_flavors) (*normal* or *amend*) with message in "Commit message" section.
+
+##### :w :x :wq ZZ
+ * From [commit mode](commit_mode), commit all staged changes with [commit flavor](commit_mode_flavors) (*normal* or *amend*) with message in "Commit message" section.
 
 ##### CA
- * If not in commit section, set commit mode to "Amend commit" and show "Commit message" section with previous commit message.
- * If in commit section, commit the staged changes in commit mode previously set.
+ * From [stage mode](stage_mode) or [commit mode](commit_mode): set [commit mode](commit_mode) in [amend flavor](commit_mode_flavors), and display "Commit message" section with previous commit message. Commit will be meld with previous commit.
 
 ##### CF
- * Amend the staged changes into the previous commit, without modifying previous commit message.
+ * From [stage mode](stage_mode): amend the staged changes into the previous commit, without modifying previous commit message.
 
 ##### CU
- * Close a commit section (If you need soon after open or editing commit message, pressing 'u' is good enough).
+ * From [commit mode](commit_mode): go back to stage mode (current commit message will be lost).
 
 ##### I
  * Add the file under the cursor in .gitgnore
@@ -222,11 +271,20 @@ E means 'edit'.
 ##### R
  * Refresh magit buffer
 
+##### -,+,0
+ * Shrink,enlarge,reset diff context
+
 ##### q
  * Close the magit buffer
 
 ##### ?
  * Toggle help showing in magit buffer
+
+#### Mapping update
+
+Since vimagit 1.7, jump mappings have changed:
+ *  Jump next hunk : **N** -> **\<C-n>**
+ *  Jump prev hunk : **P** -> **\<C-p>**
 
 #### Autocommand events
 
@@ -253,14 +311,25 @@ absolute path.
 *Note:* `g:magit_last_updated_buffer` will be updated and VimagitUpdateFile event will
 be raised only if the buffer is currently opened in vim.
 
-##### VimagitCommitEnter
+##### VimagitEnterCommit
 
 This event is raised when the commit section opens and the cursor is
 placed in this section. For example, the user may want to go straight into
-insert mode when committing, defining this |autocmd| in its vimrc:
+insert mode when committing, defining this autocmd in its vimrc:
 
 ```
   autocmd User VimagitEnterCommit startinsert
+```
+
+##### VimagitLeaveCommit
+
+This event is raised when the commit section is closed, because the user
+finished to write its commit message or canceled it. For example, the user wants
+to set the |textwidth| of the vimagit buffer while editing a commit message,
+   defining these |autocmd| in vimrc:
+```
+  autocmd User VimagitEnterCommit setlocal textwidth=72
+  autocmd User VimagitLeaveCommit setlocal textwidth=0
 ```
 
 #### Autocmd example
@@ -281,7 +350,7 @@ example to your vimrc.
 
 ### Options
 
-User can define in its prefered |vimrc| some options.
+User can define in its prefered vimrc some options.
 
 #### g:magit_enabled
 
@@ -298,6 +367,12 @@ Git command, may be simply simply "git" if git is in your path. Defualt is "git"
 
 To disable chatty inline help in magit buffer (default 1)
 > let g:magit_show_help=[01]
+
+#### g:magit_commit_title_limit
+
+Text is grayed if first line of commit message exceed this number of character (default 50)
+
+> let g:magit_commit_title_limit=[0..300]
 
 #### g:magit_default_show_all_files
 
@@ -316,6 +391,13 @@ When set to 1, filenames are unfolded and hunks are folded.
 When set to 2, filenames and hunks are unfolded.
 Default value is 1.
 > let g:magit_default_fold_level=[012]
+
+#### g:magit_auto_foldopen
+
+When stage/unstage a hunk, cursor goes to the closest hunk in the same section.
+This option automatically opens the fold of the hunk cursor has jump to.
+Default value is 1.
+> let g:magit_auto_foldopen=[01]
 
 #### g:magit_default_sections
 
@@ -342,21 +424,11 @@ Default value is 0.
 
 #### g:magit_refresh_gitgutter
 
-When set to 1, and if vim-gitgutter plugin is installed, gitgutter signs will
+When set to 1, and if [vim-gitgutter][2] plugin is installed, gitgutter signs will
 be updated each time magit update the git status of a file (i.e. when a file
 or a hunk is staged/unstaged).
 Default value is 1.
 > let g:magit_refresh_gitgutter=[01]
-
-## Installation
-
-The plugin hierarchy tree respects the vim plugin standard. It is compatible
-with pathogen (and most probably vundle).
-
-To install:
-
-    cd ~/.vim/bundle
-    git clone https://github.com/jreybert/vimagit
 
 ## Requirements
 
@@ -364,12 +436,46 @@ This part must be refined, I don't see any minimal version for git and vim, but 
 
 At least, it is tested with vim 7.3.249 and git 1.8.5.6 (see [Integration](#integration)).
 
+## Integration
+
+Branches [master][10] and [next][11] are continuously tested on [travis][12] when published on github.
+
+vimagit is tested with various versions of vim on linux: vim 7.3.249, vim 7.4.273, and latest neovim version. It is also tested for macos X: vim, macvim and neovim. Anyway, if you feel that vimagit behaves oddly (slow refresh, weird display order...) please fill an [issue][9].
+
+For the most enthusiastic, you can try the branch [next](https://github.com/jreybert/vimagit/tree/next). It is quite stable, just check its travis status before fetching it.
+
+Travis status:
+* **[master status][13]**: [![Master build status](https://travis-ci.org/jreybert/vimagit.svg?branch=master)][13]
+* **[next status][13]**: [![next build status](https://travis-ci.org/jreybert/vimagit.svg?branch=next)][13]
+
+A lot a features are developed in dev/feature_name branches. While it may be asked to users to test these branches (during a bug fix for example), one is warned that these branches may be heavily rebased/deleted.
+
+## Contribution guideline
+
+Pull requests are very welcomed. Some good practice:
+- Make your pull request upon `next` branch
+- In case changes are asked in your PR, prefer a rebase instead of a new commit
+
 ## Credits
 
-* Obviously, big credit to [magit](https://github.com/magit/magit). For the moment, I am only copying their stage workflow, but I won't stop there! They have a lot of other good ideas.
-* Sign handling is based on [gitgutter](https://github.com/airblade/vim-gitgutter) work.
-* Command line completion is based on [hypergit](https://github.com/c9s/hypergit.vim) work.
+* Obviously, big credit to [Magit][1]. For the moment, I am only copying their stage workflow, but I won't stop there! They have a lot of other good ideas.
+* Sign handling is based on [vim-gitgutter][2] work.
+* Command line completion is based on [hypergit][3] work.
 
 ## License
 
 Copyright (c) Jerome Reybert. Distributed under the same terms as Vim itself. See :help license.
+
+[1]: https://github.com/magit/magit
+[2]: https://github.com/airblade/vim-gitgutter
+[3]: https://github.com/c9s/hypergit.vim
+[4]: https://gitter.im/jreybert/vimagit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[5]: https://asciinema.org/a/28761
+[6]: https://youtu.be/_3wMmmVi6bU
+[7]: https://github.com/mhartington
+[8]: https://github.com/vim-airline/vim-airline
+[9]: https://github.com/jreybert/vimagit/issues/new
+[10]: https://github.com/jreybert/vimagit/
+[11]: https://github.com/jreybert/vimagit/tree/next
+[12]: https://travis-ci.org/jreybert/vimagit
+[13]: https://travis-ci.org/jreybert/vimagit/branches
