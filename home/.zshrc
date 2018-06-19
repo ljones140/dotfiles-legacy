@@ -1,6 +1,6 @@
 # system-wide environment settings for zsh(1)
 if [ -x /usr/libexec/path_helper ]; then
-	eval `/usr/libexec/path_helper -s`
+  eval `/usr/libexec/path_helper -s`
 fi
 
 export PATH="/usr/local/sbin:$PATH"
@@ -71,6 +71,7 @@ alias tas='tmux attach-session -t'
 alias tagme='ctags -R --languages=ruby --exclude=.git --exclude=log .'
 alias btagme='ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)'
 alias buildst='git semaphore -s | jq '' .result'''
+alias kill_rspec=kill -9 `pgrep -f rspec`
 #env
 source ~/.env
 source ~/.after_sbrc
@@ -82,3 +83,5 @@ export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
+
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

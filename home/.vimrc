@@ -51,6 +51,7 @@ Plugin 'tpope/vim-obsession'
 Plugin 'wfleming/vim-codeclimate'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'tpope/vim-dadbod'
 
 " All of your Plugins must be added before the following line
 
@@ -171,11 +172,18 @@ if executable('ag')
   let g:ctrlp_use_caching = 0
 endif
 
+autocmd QuickFixCmdPost *grep* nested cwindow|redraw!          " open quickfix window after using Grep, grep, vimgrep
+autocmd FileType qf wincmd J
+
+" bind \ (backward slash) to grep shortcut
+nnoremap \ :silent Ggrep! ""<left>
+
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 " bind \ (backward slash) to grep shortcut
 
 " command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-nnoremap \ :Ag<SPACE>
+" nnoremap \ :Ag<SPACE>
+
 " Make it obvious where 80 characters is
 set textwidth=80
 set colorcolumn=+1
@@ -186,6 +194,9 @@ set numberwidth=5
 
 "refresh file changes
 :set autoread
+
+"delete to buffer
+nmap <leader>dd "bd
 
 "pasting
 set clipboard=unnamed
@@ -232,6 +243,9 @@ nmap gr o<ESC>kO<ESC>j
 
 "insert require pry
 nmap <leader>py orequire "pry"; binding.pry<ESC>
+
+" insert puts debugging
+nmap <leader>pu op * '#'<ESC>op * 'PUTS DEBUGGING'<ESC>op * '#'<ESC>
 
 " vim-rspec mappings
 let g:rspec_command = "call VtrSendCommand('be rspec {spec}')"
