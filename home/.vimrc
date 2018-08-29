@@ -48,6 +48,7 @@ Plugin 'tpope/vim-bundler'
 Plugin 'tpope/gem-ctags'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-obsession'
+Plugin 'slashmili/alchemist.vim'
 Plugin 'wfleming/vim-codeclimate'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
@@ -178,7 +179,8 @@ autocmd FileType qf wincmd J
 " bind \ (backward slash) to grep shortcut
 nnoremap \ :silent Ggrep! ""<left>
 
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
 " bind \ (backward slash) to grep shortcut
 
 " command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
@@ -245,7 +247,7 @@ nmap gr o<ESC>kO<ESC>j
 nmap <leader>py orequire "pry"; binding.pry<ESC>
 
 " insert puts debugging
-nmap <leader>pu op * '#'<ESC>op * 'PUTS DEBUGGING'<ESC>op * '#'<ESC>
+nmap <leader>pu op '#' * 10<ESC>op 'PUTS DEBUGGING'<ESC>op '#' * 10<ESC>
 
 " vim-rspec mappings
 let g:rspec_command = "call VtrSendCommand('be rspec {spec}')"
