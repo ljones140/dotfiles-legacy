@@ -26,7 +26,6 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'christoomey/vim-tmux-runner'
 Plugin 'xero/sourcerer'
 Plugin 'christoomey/vim-conflicted'
-Plugin 'suan/vim-instant-markdown'
 Plugin 'ngmy/vim-rubocop'
 Plugin 'tpope/vim-rails'
 Plugin 'easysid/mod8.vim'
@@ -35,15 +34,10 @@ Plugin 'rking/ag.vim'
 Plugin 'ervandew/supertab'
 Plugin 'chriskempson/base16-vim'
 Plugin 'airblade/vim-gitgutter'
-Plugin 'rodjek/vim-puppet'
-Plugin 'jgdavey/vim-blockle'
-Plugin 'jreybert/vimagit'
-Plugin 'idanarye/vim-merginal'
-Plugin 'elixir-lang/vim-elixir'
+Plugin 'elixir-editors/vim-elixir'
 Plugin 'tpope/vim-haml'
 Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-rbenv'
-Plugin 'floobits/floobits-neovim'
 Plugin 'tpope/vim-bundler'
 Plugin 'tpope/gem-ctags'
 Plugin 'tpope/vim-repeat'
@@ -52,7 +46,11 @@ Plugin 'slashmili/alchemist.vim'
 Plugin 'wfleming/vim-codeclimate'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'leafgarland/typescript-vim'
 Plugin 'tpope/vim-dadbod'
+Plugin 'wincent/terminus'
+Plugin 'elzr/vim-json'
+Plugin 'fatih/vim-go'
 
 " All of your Plugins must be added before the following line
 
@@ -133,6 +131,8 @@ augroup vimrcEx
   autocmd BufRead,BufNewFile Appraisals set filetype=ruby
   autocmd BufRead,BufNewFile *.md set filetype=markdown
   autocmd BufRead,BufNewFile *.es6 set filetype=javascript
+  autocmd BufRead,BufNewFile *jsonschema/* set filetype=json
+  autocmd BufRead,BufNewFile *.wfm set filetype=ruby
 
   " Enable spellchecking for Markdown
   autocmd FileType markdown setlocal spell
@@ -196,6 +196,8 @@ set numberwidth=5
 
 "refresh file changes
 :set autoread
+" au FocusGained,BufEnter * :silent! e!
+" au FocusLost,WinLeave * :silent! noautocmd 
 
 "delete to buffer
 nmap <leader>dd "bd
@@ -224,7 +226,7 @@ let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " Index ctags from any project, including those outside Rails
-map <Leader>ct :!ctags -R .<CR>
+map <Leader>ct :!ctags -R --exclude=node_modules .<CR>
 " nerdtree map
 map <C-n> :NERDTreeToggle<CR>
 " Switch between the last two files
@@ -341,6 +343,16 @@ if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
 
+au BufNewFile,BufRead *.prawn set filetype=ruby
+
+au BufNewFile,BufRead *.ejs set filetype=html
+
 " presistant undo
 set undodir=~/.vim/undodir
 set undofile   " Maintain undo history between sessions
+
+" code folding
+set foldmethod=indent   
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2

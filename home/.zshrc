@@ -3,9 +3,18 @@ if [ -x /usr/libexec/path_helper ]; then
   eval `/usr/libexec/path_helper -s`
 fi
 
+if [ -f /etc/profile ]; then
+    PATH=""
+    source /etc/profile
+fi
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.rbenv/shims":$PATH
+export PATH="$HOME/.nodenv/shims":$PATH
+
+# Golang
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
 
 . `brew --prefix`/etc/profile.d/z.sh
 
@@ -43,13 +52,15 @@ if command -v rbenv >/dev/null; then
   eval "$(rbenv init - --no-rehash)"
 fi
 
+eval "$(nodenv init -)"
+
 # mkdir .git/safe in the root of repositories you trust
 PATH=".git/safe/../../bin:$PATH"
 
 export -U PATH
 
 source $ZSH/oh-my-zsh.sh
-export PROJECTS_HOME=${HOME}/projects
+export PROJECTS_HOME=${HOME}/projects/simplybusiness
 
 #speed up escape in vim
 # 10ms for key sequences
@@ -63,25 +74,32 @@ alias ga='git add '
 alias gb='git branch '
 alias gc='git commit'
 alias gd='git diff'
-alias go='git checkout '
 alias gk='gitk --all&'
 alias gx='gitx --all'
 alias lock='/System/Library/CoreServices/"Menu Extras"/User.menu/Contents/Resources/CGSession -suspend'
 alias tas='tmux attach-session -t'
 alias tagme='ctags -R --languages=ruby --exclude=.git --exclude=log .'
 alias btagme='ctags -R --languages=ruby --exclude=.git --exclude=log . $(bundle list --paths)'
-alias buildst='git semaphore -s | jq '' .result'''
+alias buildst='git semaphore --refresh --status | jq '' .result'''
 alias kill_rspec=kill -9 `pgrep -f rspec`
 #env
 source ~/.env
 source ~/.after_sbrc
 
-export NVM_DIR="$HOME/.nvm"
-. "/usr/local/opt/nvm/nvm.sh"
+# iterm shell intergration
+source ~/.iterm2_shell_integration.zsh
+
+# export NVM_DIR="$HOME/.nvm"
+# . "/usr/local/opt/nvm/nvm.sh"
 export PATH="/usr/local/opt/qt@5.5/bin:$PATH"
 
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# Add Visual Studio Code (code)
+export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+# twilio autocomplete setup
+TWILIO_AC_ZSH_SETUP_PATH=/Users/Lewis.Jones/.twilio-cli/autocomplete/zsh_setup && test -f $TWILIO_AC_ZSH_SETUP_PATH && source $TWILIO_AC_ZSH_SETUP_PATH;
