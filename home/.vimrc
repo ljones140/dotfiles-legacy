@@ -1,60 +1,53 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-"
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+" Vimplug for plugins
+call plug#begin('~/.vim/plugged')
 
-"alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'scrooloose/nerdTree'
-Plugin 'thoughtbot/vim-rspec'
-Plugin 'morhetz/gruvbox'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-rhubarb'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-surround'
-Plugin 'jlanzarotta/bufexplorer'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'christoomey/vim-tmux-runner'
-Plugin 'xero/sourcerer'
-Plugin 'christoomey/vim-conflicted'
-Plugin 'ngmy/vim-rubocop'
-Plugin 'tpope/vim-rails'
-Plugin 'easysid/mod8.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'rking/ag.vim'
-Plugin 'ervandew/supertab'
-Plugin 'chriskempson/base16-vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'elixir-editors/vim-elixir'
-Plugin 'tpope/vim-haml'
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-rbenv'
-Plugin 'tpope/vim-bundler'
-Plugin 'tpope/gem-ctags'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-obsession'
-Plugin 'slashmili/alchemist.vim'
-Plugin 'wfleming/vim-codeclimate'
-Plugin 'pangloss/vim-javascript'
-Plugin 'mxw/vim-jsx'
-Plugin 'leafgarland/typescript-vim'
-Plugin 'tpope/vim-dadbod'
-Plugin 'wincent/terminus'
-Plugin 'elzr/vim-json'
-Plugin 'fatih/vim-go'
+Plug 'VundleVim/Vundle.vim'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'thoughtbot/vim-rspec'
+Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-runner'
+Plug 'xero/sourcerer'
+Plug 'christoomey/vim-conflicted'
+Plug 'ngmy/vim-rubocop'
+Plug 'tpope/vim-rails'
+Plug 'easysid/mod8.vim'
+Plug 'godlygeek/tabular'
+Plug 'rking/ag.vim'
+Plug 'ervandew/supertab'
+Plug 'chriskempson/base16-vim'
+Plug 'airblade/vim-gitgutter'
+Plug 'elixir-editors/vim-elixir'
+Plug 'tpope/vim-haml'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-rbenv'
+Plug 'tpope/vim-bundler'
+Plug 'tpope/gem-ctags'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-obsession'
+Plug 'slashmili/alchemist.vim'
+Plug 'wfleming/vim-codeclimate'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'leafgarland/typescript-vim'
+Plug 'tpope/vim-dadbod'
+Plug 'wincent/terminus'
+Plug 'elzr/vim-json'
+Plug 'fatih/vim-go'
 
 " All of your Plugins must be added before the following line
-
-call vundle#end()            " required
+"
+call plug#end() "required
 
 filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
