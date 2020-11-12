@@ -6,7 +6,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'VundleVim/Vundle.vim'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'thoughtbot/vim-rspec'
+Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
@@ -19,31 +19,31 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'xero/sourcerer'
 Plug 'christoomey/vim-conflicted'
-Plug 'ngmy/vim-rubocop'
-Plug 'tpope/vim-rails'
+Plug 'ngmy/vim-rubocop', { 'for': 'ruby' }
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'easysid/mod8.vim'
 Plug 'godlygeek/tabular'
 Plug 'rking/ag.vim'
 Plug 'ervandew/supertab'
 Plug 'chriskempson/base16-vim'
 Plug 'airblade/vim-gitgutter'
-Plug 'elixir-editors/vim-elixir'
+Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
 Plug 'tpope/vim-haml'
 Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-rbenv'
+Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
 Plug 'tpope/vim-bundler'
 Plug 'tpope/gem-ctags'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-obsession'
 Plug 'slashmili/alchemist.vim'
 Plug 'wfleming/vim-codeclimate'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'leafgarland/typescript-vim'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'tpope/vim-dadbod'
 Plug 'wincent/terminus'
 Plug 'elzr/vim-json'
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'for': 'go' }
 
 " All of your Plugins must be added before the following line
 "
