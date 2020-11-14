@@ -251,12 +251,11 @@ autocmd VimEnter * if filereadable("bin/spring") | let g:rspec_command = "call V
 nnoremap <Leader>t :call RunCurrentSpecFile()<CR>
 nnoremap <Leader>s :call RunNearestSpec()<CR>
 nnoremap <Leader>l :call RunLastSpec()<CR>
-nnoremap <Leader>a :call RunAllSpecs()<CR>
+" nnoremap <Leader>a :call RunAllSpecs()<CR>
 nnoremap <leader>va :VtrAttachToPane<cr>
 
-
 " Run commands that require an interactive shell
-nnoremap <Leader>r :RunInInteractiveShell<space>
+" nnoremap <Leader>r :RunInInteractiveShell<space>
 
 " Buffers
 :nmap <F5> :buffers<CR>:buffer<Space>
