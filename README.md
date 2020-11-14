@@ -42,10 +42,14 @@ homesick symlink dotfiles
 ```
 Install Vundler
 
-**having problems with this at them moment so may have to install Vundler
-manually**
-Uses .homesickrc to install vundler.
-```sh
-homesick rc dotfiles
-```
-then in vim run :PluginInstall to get vundler to take the plugins.
+
+# Coc configuration
+
+Trialing use of COC https://github.com/neoclide/coc.nvim to make vim more like
+an IDE.
+
+It's been set up with Solograph https://github.com/neoclide/coc-solargraph for
+Ruby and a combination of vim-go and gopls for golang.
+It's working great for Golang. Ruby takes a bit of setup.
+
+At the moment I'm having to add `solargraph` gem to Gemfile of project.
