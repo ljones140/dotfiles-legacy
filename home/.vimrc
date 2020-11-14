@@ -4,46 +4,45 @@ filetype off                  " required
 " Vimplug for plugins
 call plug#begin('~/.vim/plugged')
 
-Plug 'VundleVim/Vundle.vim'
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
-Plug 'morhetz/gruvbox'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'jlanzarotta/bufexplorer'
+Plug 'airblade/vim-gitgutter'
+Plug 'chriskempson/base16-vim'
+Plug 'christoomey/vim-conflicted'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
-Plug 'xero/sourcerer'
-Plug 'christoomey/vim-conflicted'
-Plug 'ngmy/vim-rubocop', { 'for': 'ruby' }
-Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'easysid/mod8.vim'
-Plug 'godlygeek/tabular'
-Plug 'rking/ag.vim'
-Plug 'ervandew/supertab'
-Plug 'chriskempson/base16-vim'
-Plug 'airblade/vim-gitgutter'
 Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
-Plug 'tpope/vim-haml'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
-Plug 'tpope/vim-bundler'
-Plug 'tpope/gem-ctags'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-obsession'
-Plug 'slashmili/alchemist.vim'
-Plug 'wfleming/vim-codeclimate'
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'mxw/vim-jsx', { 'for': 'javascript' }
-Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-Plug 'tpope/vim-dadbod'
-Plug 'wincent/terminus'
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'godlygeek/tabular'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
+Plug 'morhetz/gruvbox'
+Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'ngmy/vim-rubocop', { 'for': 'ruby' }
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'rking/ag.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'slashmili/alchemist.vim'
+Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
+Plug 'tpope/gem-ctags'
+" Plug 'tpope/vim-bundler', { 'for': 'ruby' } "disable as clashes with  solargraph
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-dadbod'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-haml'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-surround'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'wfleming/vim-codeclimate'
+Plug 'wincent/terminus'
+Plug 'xero/sourcerer'
 
 " All of your Plugins must be added before the following line
 "
