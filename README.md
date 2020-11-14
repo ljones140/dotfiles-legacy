@@ -40,7 +40,9 @@ once cloned then symlink the dotfiles
 ```sh
 homesick symlink dotfiles
 ```
-Install Vundler
+
+Vim Plug is being used for Vim plugins
+https://github.com/junegunn/vim-plug
 
 
 # Coc configuration
