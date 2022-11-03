@@ -4,6 +4,7 @@ filetype off                  " required
 " Vimplug for plugins
 call plug#begin('~/.vim/plugged')
 
+" Plug 'tpope/vim-bundler', { 'for': 'ruby' } "disable as clashes with  solargraph
 Plug 'airblade/vim-gitgutter'
 Plug 'chriskempson/base16-vim'
 Plug 'christoomey/vim-conflicted'
@@ -11,13 +12,17 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'easysid/mod8.vim'
 Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
+Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 Plug 'elzr/vim-json'
 Plug 'fatih/vim-go', { 'for': 'go' }
 Plug 'godlygeek/tabular'
 Plug 'jlanzarotta/bufexplorer'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'morhetz/gruvbox'
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+Plug 'mustache/vim-mustache-handlebars'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ngmy/vim-rubocop', { 'for': 'ruby' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
@@ -26,13 +31,13 @@ Plug 'scrooloose/nerdtree'
 Plug 'slashmili/alchemist.vim'
 Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 Plug 'tpope/gem-ctags'
-" Plug 'tpope/vim-bundler', { 'for': 'ruby' } "disable as clashes with  solargraph
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-haml'
 Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
 Plug 'tpope/vim-repeat'
@@ -142,7 +147,7 @@ augroup vimrcEx
 augroup END
 
 " Softtabs, 2 spaces
-set tabstop=2
+set tabstop=4
 set shiftwidth=2
 set shiftround
 set expandtab
@@ -154,16 +159,17 @@ set wildmenu
 set list listchars=tab:»·,trail:·,nbsp:·
 
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
+" if executable('ag')
+"   " Use Ag over Grep
+"   set grepprg=ag\ --nogroup\ --nocolor
 
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+"   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+"   let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
+"   " ag is fast enough that CtrlP doesn't need to cache
+"   let g:ctrlp_use_caching = 0
+" endif
+
 
 autocmd QuickFixCmdPost *grep* nested cwindow|redraw!          " open quickfix window after using Grep, grep, vimgrep
 autocmd FileType qf wincmd J
@@ -171,12 +177,16 @@ autocmd FileType qf wincmd J
 " bind \ (backward slash) to grep shortcut
 nnoremap \ :silent Ggrep! ""<left>
 
-" nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
+" nnoremap <silent> \ :Rg<cr>
+
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " bind \ (backward slash) to grep shortcut
 
-" command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-" nnoremap \ :Ag<SPACE>
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
 
 " Make it obvious where 80 characters is
 set textwidth=80
@@ -187,7 +197,17 @@ set number
 set numberwidth=5
 
 "refresh file changes
-:set autoread
+" :set autoread
+" Trigger `autoread` when files changes on disk
+" https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
+" https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
+    autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+            \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+
+" Notification after file change
+" https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+autocmd FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 " au FocusGained,BufEnter * :silent! e!
 " au FocusLost,WinLeave * :silent! noautocmd 
 
@@ -246,7 +266,7 @@ nmap <leader>pu op '#' * 10<ESC>op 'PUTS DEBUGGING'<ESC>op '#' * 10<ESC>
 " vim-rspec mappings
 let g:rspec_command = "call VtrSendCommand('be rspec {spec}')"
 "use spring to run tests if project has spring
-autocmd VimEnter * if filereadable("bin/spring") | let g:rspec_command = "call VtrSendCommand('be spring rspec {spec}')" | endi
+"autocmd VimEnter * if filereadable("bin/spring") | let g:rspec_command = "call VtrSendCommand('be spring rspec {spec}')" | endi
 
 nnoremap <Leader>t :call RunCurrentSpecFile()<CR>
 nnoremap <Leader>s :call RunNearestSpec()<CR>
@@ -262,9 +282,13 @@ nnoremap <leader>va :VtrAttachToPane<cr>
 :nmap ] :bnext<CR>
 :nmap [ :bprevious<CR>
 
-"ctage Ctrl-p
+"serarch Ctrl-p
+nnoremap <silent> <C-p> :Files<cr>
 nnoremap <leader>. :CtrlPTag<cr>
-nnoremap <leader>, :CtrlPBuffer<cr>
+nnoremap <leader>, :Buffers<cr>
+nnoremap <silent> <Leader>hh :History<CR>
+nnoremap <silent> <Leader>h: :History:<CR>
+nnoremap <silent> <Leader>h/ :History/<CR> 
 
 " Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
@@ -326,9 +350,9 @@ endfunction
 set stl+=%{ConflictedVersion()}
 
 " Always use vertical diffs
-set diffopt+=vertical
+" set diffopt+=vertical
 " ctlp p install
-set runtimepath^=~/.vim/bundle/ctrlp.vim
+" set runtimepath^=~/.vim/bundle/ctrlp.vim
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
@@ -413,23 +437,25 @@ nmap <leader>rn <Plug>(coc-rename)
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 " Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
 " Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+" nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 " disable vim-go :GoDef short cut (gd)
 " this is handled by LanguageClient [LC]
 let g:go_def_mapping_enabled = 0
-let g:go_fmt_command='goimports'
+" let g:go_fmt_command='goimports'
+let g:go_fmt_command="gopls"
+let g:go_gopls_gofumpt=1
