@@ -2,19 +2,23 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " Vimplug for plugins
+
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 call plug#begin('~/.vim/plugged')
 
 " Plug 'tpope/vim-bundler', { 'for': 'ruby' } "disable as clashes with  solargraph
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 Plug 'chriskempson/base16-vim'
 Plug 'christoomey/vim-conflicted'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'easysid/mod8.vim'
-Plug 'elixir-editors/vim-elixir', { 'for': 'elixir' }
-Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 Plug 'elzr/vim-json'
-Plug 'fatih/vim-go', { 'for': 'go' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'godlygeek/tabular'
 Plug 'jlanzarotta/bufexplorer'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -23,7 +27,7 @@ Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'morhetz/gruvbox'
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 Plug 'mustache/vim-mustache-handlebars'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ngmy/vim-rubocop', { 'for': 'ruby' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'rking/ag.vim'
@@ -31,13 +35,13 @@ Plug 'scrooloose/nerdtree'
 Plug 'slashmili/alchemist.vim'
 Plug 'thoughtbot/vim-rspec', { 'for': 'ruby' }
 Plug 'tpope/gem-ctags'
+" Plug 'github/copilot.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dadbod'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-haml'
 Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
 Plug 'tpope/vim-repeat'
@@ -48,7 +52,9 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'wfleming/vim-codeclimate'
 Plug 'wincent/terminus'
 Plug 'xero/sourcerer'
-
+Plug 'tpope/vim-rbenv'
+Plug 'ryanoasis/vim-devicons'
+Plug 'hashivim/vim-terraform'
 " All of your Plugins must be added before the following line
 "
 call plug#end() "required
@@ -90,6 +96,7 @@ nnoremap <leader>sa :VtrSendFile<cr>
 "Airline config"
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme="base16_ashes"
 
 autocmd VimResized * :wincmd = " automatically rebalance windows on vim resize
 
@@ -156,7 +163,7 @@ set expandtab
 set t_Co=256
 set wildmenu
 " Display extra whitespace
-set list listchars=tab:»·,trail:·,nbsp:·
+" set list listchars=tab:»·,trail:·,nbsp:·
 
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
 " if executable('ag')
@@ -191,6 +198,7 @@ nnoremap \ :Ag<SPACE>
 " Make it obvious where 80 characters is
 set textwidth=80
 set colorcolumn=+1
+highlight ColorColumn ctermbg=235 guibg=#2c2d27
 
 " Numbers
 set number
@@ -231,14 +239,6 @@ endfunction
 inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
 inoremap <S-Tab> <c-n>
 
-" Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
-let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
-
-" vim-jsx syntax highlighting for jsx in .js
-let g:jsx_ext_required = 0 " Allow JSX in normal JS files
-
-" Index ctags from any project, including those outside Rails
-map <Leader>ct :!ctags -R --exclude=node_modules .<CR>
 " nerdtree map
 map <C-n> :NERDTreeToggle<CR>
 " Switch between the last two files
@@ -260,17 +260,29 @@ nmap gr o<ESC>kO<ESC>j
 "insert require pry
 nmap <leader>py orequire "pry"; binding.pry<ESC>
 
-" insert puts debugging
-nmap <leader>pu op '#' * 10<ESC>op 'PUTS DEBUGGING'<ESC>op '#' * 10<ESC>
+" insert print debugging Ruby and Go
+
+function! PrintDebug()
+  if &filetype == "go"
+     execute "normal! o fmt.Println(\"Debug\")\<ESC>"
+  endif
+  if &filetype == "ruby"
+     execute "normal! op '#' * 10\<ESC>\op 'PUTS DEBUGGING'\<ESC>\op '#' * 10\<ESC>"
+  endif
+endfunction
+
+nmap <leader>pu :call PrintDebug()<CR>
+
+" nmap <leader>pu op '#' * 10<ESC>op 'PUTS DEBUGGING'<ESC>op '#' * 10<ESC>
 
 " vim-rspec mappings
 let g:rspec_command = "call VtrSendCommand('be rspec {spec}')"
 "use spring to run tests if project has spring
-"autocmd VimEnter * if filereadable("bin/spring") | let g:rspec_command = "call VtrSendCommand('be spring rspec {spec}')" | endi
+" autocmd VimEnter * if filereadable("bin/spring") | let g:rspec_command = "call VtrSendCommand('be spring rspec {spec}')" | endif
 
-nnoremap <Leader>t :call RunCurrentSpecFile()<CR>
-nnoremap <Leader>s :call RunNearestSpec()<CR>
-nnoremap <Leader>l :call RunLastSpec()<CR>
+" nnoremap <Leader>t :call RunCurrentSpecFile()<CR>
+" nnoremap <Leader>s :call RunNearestSpec()<CR>
+" nnoremap <Leader>l :call RunLastSpec()<CR>
 " nnoremap <Leader>a :call RunAllSpecs()<CR>
 nnoremap <leader>va :VtrAttachToPane<cr>
 
@@ -372,70 +384,75 @@ set foldnestmax=10
 set nofoldenable
 set foldlevel=2
 
-"coc setup
-"" TextEdit might fail if hidden is not set.
-set hidden
+""coc setup
+""" TextEdit might fail if hidden is not set.
+"set hidden
 
-" Give more space for displaying messages.
-set cmdheight=2
+"" Give more space for displaying messages.
+"set cmdheight=2
 
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=300
+"" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+"" delays and poor user experience.
+"set updatetime=300
 
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
+"" Don't pass messages to |ins-completion-menu|.
+"set shortmess+=c
 
-"solargraph
-" let g:coc_global_extensions = ['coc-solargraph']
+""solargraph
+"let g:coc_global_extensions = ['coc-solargraph']
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+"" Always show the signcolumn, otherwise it would shift the text each time
+"" diagnostics appear/become resolved.
+"if has("patch-8.1.1564")
+"  " Recently vim can merge signcolumn and number column into one
+"  set signcolumn=number
+"else
+"  set signcolumn=yes
+"endif
 
-" Use tab for trigger completion with characters ahead and navigate.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"" Use tab for trigger completion with characters ahead and navigate.
+"inoremap <silent><expr> <TAB>
+"      \ coc#pum#visible() ? coc#pum#next(1) :
+"      \ CheckBackspace() ? "\<Tab>" :
+"      \ coc#refresh()
+"inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+"" Make <CR> to accept selected completion item or notify coc.nvim to format
+"" <C-g>u breaks current undo, please make your own choice
+"inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+"                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
+"function! CheckBackspace() abort
+"  let col = col('.') - 1
+"  return !col || getline('.')[col - 1]  =~# '\s'
+"endfunction
 
-" Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
+"" Use <c-space> to trigger completion
+"if has('nvim')
+"  inoremap <silent><expr> <c-space> coc#refresh()
+"else
+"  inoremap <silent><expr> <c-@> coc#refresh()
+"endif
 
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+"" Use `[c` and `]c` to navigate diagnostics
+"nmap <silent> [c <Plug>(coc-diagnostic-prev)
+"nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
-" Use U to show documentation in preview window
-nnoremap <silent> U :call <SID>show_documentation()<CR>
+"" Remap keys for gotos
+"nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gy <Plug>(coc-type-definition)
+"nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gr <Plug>(coc-references)
 
-" Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
+"" Use U to show documentation in preview window
+"nnoremap <silent> U :call <SID>show_documentation()<CR>
 
-" Remap for format selected region
-vmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+"" Remap for rename current word
+"nmap <leader>rn <Plug>(coc-rename)
+
+"" Remap for format selected region
+"vmap <leader>f  <Plug>(coc-format-selected)
+"nmap <leader>f  <Plug>(coc-format-selected)
 " Show all diagnostics
 " nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions
